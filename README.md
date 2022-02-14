@@ -15,7 +15,8 @@ We will use the technologies below to create a demo application:
 
 * [Storage Deploy](#storage-deploy)
 * [Build and push Docker](#build-and-push-docker)
-* [Run and test the application](#run-and-test-the-application)
+* [Run the application in Local](#run-the-application-in-local)
+* [Call API endpoints](#call-api-endpoints)
 * [Storage Destroy](#storage-destroy)
 
 
@@ -52,8 +53,81 @@ sh deploy/backend/api/image/deploy.sh
 ## Run and test the application
 To run the application, we need to run the following command:
 ```shell
-
+docker run -p 8080:8080 \
+  -e JWT_SECRET=${JWT_SECRET} \
+  -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+  -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_CESS_KEY} \
+   docker.io/soyvural/spring-data-dynamodb
 ````
+
+## Call API endpoints
+1. Authenticate and get a JWT token:
+  - User role can only call "GET /products" and "GET /products/{id}" endpoints.
+  - So, let's get a JWT token for the admin user and access every endpoint.
+
+```shell
+  curl --location --request POST 'http://localhost:8080/authenticate' --header 'Content-Type: application/json' \
+  --data-raw '{
+      "username": "admin",
+      "password": "pwd"
+  }''
+  
+  Response:
+  {
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NDg0MDE5NSwiZXhwIjoxNjQ0OTI2NTk1LCJpc3MiOiJjb20ubXZzIn0.D3jONpGmivO_ZrI141LgfC35Hyje_bMW_1D5kzf4_G-xtIH9F4I-FaiyLskZG_tjPUEvQ5O2Xbu-RF2GR3mM7A",
+    "expiresIn": "Tue Feb 15 12:03:15 UTC 2022"
+  }
+```
+
+2. Call "GET /products" and "GET products/{id}" endpoint:
+  - We can get all products by calling "GET /products" endpoint.
+```shell
+curl --location --request GET 'http://localhost:8080/api/v1/products' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NDgzMDM3MSwiZXhwIjoxNjQ0OTE2NzcxLCJpc3MiOiJjb20ubXZzIn0.n0DI9SMhYzFKCg7K4atg1iaTEfqR1Td8SEbULin-ybeFsNzd9pScoGjAwKypaV-BRhq1Vr2PiLSg7_KMDgb50w'
+
+Response:
+[
+    {
+        "id": "869d9b64-6159-4b5b-9fc3-944c6407ad38",
+        "name": "Iphone 13",
+        "category": "Mobile Phone",
+        "price": 134.0
+    },
+    {
+        "id": "de5d47f1-460a-4217-b862-f1b3a9a1fc05",
+        "name": "Iphone 13",
+        "category": "Mobile Phone",
+        "price": 1302.16
+    }
+]
+
+curl --location --request GET 'http://localhost:8080/api/v1/products/de5d47f1-460a-4217-b862-f1b3a9a1fc05' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NDgzMDM3MSwiZXhwIjoxNjQ0OTE2NzcxLCJpc3MiOiJjb20ubXZzIn0.n0DI9SMhYzFKCg7K4atg1iaTEfqR1Td8SEbULin-ybeFsNzd9pScoGjAwKypaV-BRhq1Vr2PiLSg7_KMDgb50w' \
+--data-raw ''
+
+Response:
+{
+    "id": "de5d47f1-460a-4217-b862-f1b3a9a1fc05",
+    "name": "Iphone 13",
+    "category": "Mobile Phone",
+    "price": 1302.16
+}
+```
+
+3. Call "DELETE products/{id}" endpoint:
+```shell
+curl --location --request DELETE 'http://localhost:8080/api/v1/products/7c4d88b0-fb2f-45fe-885f-5a8117972d11' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NDgzMDM3MSwiZXhwIjoxNjQ0OTE2NzcxLCJpc3MiOiJjb20ubXZzIn0.n0DI9SMhYzFKCg7K4atg1iaTEfqR1Td8SEbULin-ybeFsNzd9pScoGjAwKypaV-BRhq1Vr2PiLSg7_KMDgb50w' \
+--data-raw ''
+
+Invalid Product Example:
+curl --location --request DELETE 'http://localhost:8080/api/v1/products/7c4d88b0-fb2f-45fe-885f-5a81179' \
+> --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NDgzMDM3MSwiZXhwIjoxNjQ0OTE2NzcxLCJpc3MiOiJjb20ubXZzIn0.n0DI9SMhYzFKCg7K4atg1iaTEfqR1Td8SEbULin-ybeFsNzd9pScoGjAwKypaV-BRhq1Vr2PiLSg7_KMDgb50w' \
+> --data-raw ''
+{"timestamp":"2022-02-14T12:21:29.159+00:00","message":"Not found","details":"uri=/api/v1/products/7c4d88b0-fb2f-45fe-885f-5a81179"}
+```
+
+You can populate for put as well.
 
 ## Storage Destroy
 To destroy the storage, we need to run the following command:

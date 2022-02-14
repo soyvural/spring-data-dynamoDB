@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @DynamoDBTable(tableName = "product")
 public class Product {
     @DynamoDBHashKey(attributeName = "id")
