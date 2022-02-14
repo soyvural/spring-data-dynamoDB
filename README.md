@@ -17,6 +17,7 @@ We will use the technologies below to create a demo application:
 * [Build and push Docker](#build-and-push-docker)
 * [Run the application in Local](#run-the-application-in-local)
 * [Call API endpoints](#call-api-endpoints)
+* [Swagger Documentation](#swagger-documentation)
 * [Storage Destroy](#storage-destroy)
 
 
@@ -129,7 +130,7 @@ curl --location --request DELETE 'http://localhost:8080/api/v1/products/7c4d88b0
 
 You can populate for put as well.
 
-## Swagger UI
+## Swagger Documentation
 To access REST API documentation you can use: http://localhost:8080/swagger-ui/
 1. To access product-api-v1 version 1.0 documentation by using http://localhost:8080/v2/api-docs?group=product-api-v1.0
 
