@@ -19,7 +19,7 @@ public class SpringFoxConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("product-api-v1.0")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mvs.dynamodb.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.mvs.dynamodb.web.controller"))
                 .paths(PathSelectors.regex("/api/v1/product.*"))
                 .build()
                 .consumes(Set.of("application/json"))

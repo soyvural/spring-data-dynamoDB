@@ -129,6 +129,12 @@ curl --location --request DELETE 'http://localhost:8080/api/v1/products/7c4d88b0
 
 You can populate for put as well.
 
+## Swagger UI
+To access REST API documentation you can use: http://localhost:8080/swagger-ui/
+1. To access product-api-v1 version 1.0 documentation by using http://localhost:8080/v2/api-docs?group=product-api-v1.0
+
+![](https://ibb.co/QNfkP6x)
+
 ## Storage Destroy
 To destroy the storage, we need to run the following command:
 ```shell
