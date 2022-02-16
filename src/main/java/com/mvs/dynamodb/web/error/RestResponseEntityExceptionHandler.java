@@ -1,7 +1,10 @@
 package com.mvs.dynamodb.web.error;
 
+import java.time.Instant;
+import java.util.Date;
+
 import com.mvs.dynamodb.web.exception.ProductNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -21,21 +24,21 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Please try later.", request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(Date.from(Instant.now()), "Please try later.", request.getDescription(false));
         log.error("ExceptionResponse: {}", exceptionResponse, ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
     @ExceptionHandler({EmptyResultDataAccessException.class, ProductNotFoundException.class})
     public final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Not found", request.getDescription(false));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(Date.from(Instant.now()), "Not found", request.getDescription(false));
         log.error("ExceptionResponse: {}", exceptionResponse, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), "Validation Failed", ex.getBindingResult().toString());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(Date.from(Instant.now()), "Validation Failed", ex.getBindingResult().toString());
         log.error("ExceptionResponse: {}", exceptionResponse, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }

@@ -1,13 +1,14 @@
 package com.mvs.dynamodb.service;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
-import com.mvs.dynamodb.web.exception.ProductNotFoundException;
 import com.mvs.dynamodb.model.Product;
 import com.mvs.dynamodb.repository.ProductRepository;
+import com.mvs.dynamodb.web.exception.ProductNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {

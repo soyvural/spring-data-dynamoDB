@@ -1,9 +1,23 @@
 package com.mvs.dynamodb.service;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import com.mvs.dynamodb.DynamoDBSpringDataDemoApplication;
-import com.mvs.dynamodb.web.exception.ProductNotFoundException;
 import com.mvs.dynamodb.model.Product;
 import com.mvs.dynamodb.repository.ProductRepository;
+import com.mvs.dynamodb.web.exception.ProductNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,15 +30,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DynamoDBSpringDataDemoApplication.class)
@@ -32,7 +39,7 @@ import static org.mockito.BDDMockito.*;
 @TestPropertySource(properties = {
         "amazon.dynamodb.endpoint=http://localhost:8000/",
         "amazon.aws.accesskey=test1",
-        "amazon.aws.secretkey=test231"})
+        "amazon.aws.secretkey=test231" })
 @ActiveProfiles("test")
 public class ProductServiceTest {
 

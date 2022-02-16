@@ -1,9 +1,9 @@
 package com.mvs.security.jwt.controller;
 
-
 import com.mvs.security.jwt.model.Request;
 import com.mvs.security.jwt.model.Response;
 import com.mvs.security.jwt.util.TokenUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,17 +26,17 @@ public class AuthenticationController {
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
 
-
     @Autowired
     public AuthenticationController(final AuthenticationManager authenticationManager, final TokenUtil tokenUtil,
-                                    final UserDetailsService userDetailsService) {
+            final UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.tokenUtil = tokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<Object> createAuthenticationToken(@RequestBody Request authenticationRequest) throws Exception {
+    public ResponseEntity<Object> createAuthenticationToken(@RequestBody Request authenticationRequest)
+            throws Exception {
         authenticate(authenticationRequest.username(), authenticationRequest.password());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.username());
         final Response response = tokenUtil.generateToken(userDetails);

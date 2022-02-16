@@ -2,6 +2,7 @@ package com.mvs.dynamodb.rule;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
+
 import org.junit.rules.ExternalResource;
 
 public class LocalDbCreationRule extends ExternalResource {
@@ -15,7 +16,7 @@ public class LocalDbCreationRule extends ExternalResource {
     @Override
     protected void before() throws Exception {
         String port = "8000";
-        this.server = ServerRunner.createServerFromCommandLineArgs(new String[]{"-inMemory", "-port", port});
+        this.server = ServerRunner.createServerFromCommandLineArgs(new String[] { "-inMemory", "-port", port });
         server.start();
     }
 

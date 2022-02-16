@@ -1,6 +1,10 @@
 package com.mvs.dynamodb.config;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import com.mvs.security.jwt.util.TokenUtil;
+
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -10,20 +14,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Arrays;
-import java.util.Map;
-
 @TestConfiguration
 public class SecurityTestContextConfiguration {
     public static final String TEST_USER_TOKEN = "test_user_token";
     public static final String TEST_ADMIN_TOKEN = "test_admin_token";
 
-
     // JWT_SECURITY_CONFIG map{key=token, value=username}
     private static final Map<String, String> JWT_SECURITY_CONFIG = Map.of(
             TEST_USER_TOKEN, "test_user",
-            TEST_ADMIN_TOKEN, "test_admin"
-    );
+            TEST_ADMIN_TOKEN, "test_admin");
 
     @Bean
     public TokenUtil tokenUtil() {
