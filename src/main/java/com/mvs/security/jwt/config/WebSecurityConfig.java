@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -26,16 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
     private final RequestFilter requestFilter;
-
-    @Autowired
-    public WebSecurityConfig(
-            final AuthenticationEntryPoint authenticationEntryPoint,
-            final UserDetailsService userDetailsService,
-            final RequestFilter requestFilter) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.userDetailsService = userDetailsService;
-        this.requestFilter = requestFilter;
-    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -75,6 +66,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Autowired
+    public WebSecurityConfig(
+            final AuthenticationEntryPoint authenticationEntryPoint,
+            final UserDetailsService userDetailsService,
+            final RequestFilter requestFilter) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.userDetailsService = userDetailsService;
+        this.requestFilter = requestFilter;
     }
 
 }

@@ -1,5 +1,14 @@
 package com.mvs.dynamodb.repository;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+import java.util.List;
+
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
@@ -8,6 +17,7 @@ import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.mvs.dynamodb.DynamoDBSpringDataDemoApplication;
 import com.mvs.dynamodb.model.Product;
 import com.mvs.dynamodb.rule.LocalDbCreationRule;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -20,15 +30,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
@@ -44,7 +45,6 @@ public class ProductRepositoryIntegrationTest {
     @ClassRule
     public static LocalDbCreationRule dynamoDB = new LocalDbCreationRule();
 
-
     private DynamoDBMapper dynamoDBMapper;
 
     @Autowired
@@ -52,7 +52,6 @@ public class ProductRepositoryIntegrationTest {
 
     @Autowired
     ProductRepository repository;
-
 
     @Before
     public void setup() throws Exception {
@@ -112,7 +111,8 @@ public class ProductRepositoryIntegrationTest {
 
     @Test
     public void whenSave_thenReturnRecord() {
-        Product iphone13Pro = new Product("f03f8643-d547-435c-a980-d9c013c86de4", "Iphone13 Pro", "Mobile Phone", 1000d);
+        Product iphone13Pro = new Product("f03f8643-d547-435c-a980-d9c013c86de4", "Iphone13 Pro", "Mobile Phone",
+                1000d);
         Product created = repository.save(iphone13Pro);
 
         assertThat(iphone13Pro, is(created));
