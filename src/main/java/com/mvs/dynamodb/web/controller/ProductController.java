@@ -52,7 +52,8 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> update(@Valid @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable String id, @Valid @RequestBody Product product) {
+        product.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(productService.update(product));
     }
 
