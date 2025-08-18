@@ -22,7 +22,7 @@ We will use the technologies below to create a demo application:
 
 
 ## Storage Deploy
-In this section we will deploy the storage by using Terraform. We proviosion a DynamoDB table with the following configuration:
+In this section we will deploy the storage by using Terraform. We provision a DynamoDB table with the following configuration:
 ```terraform
 resource "aws_dynamodb_table" "product" {
   name         = "product"
@@ -57,7 +57,7 @@ To run the application, we need to run the following command:
 docker run -p 8080:8080 \
   -e JWT_SECRET=${JWT_SECRET} \
   -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-  -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_CESS_KEY} \
+  -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
    docker.io/soyvural/spring-data-dynamodb
 ````
 
